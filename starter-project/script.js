@@ -54,7 +54,17 @@ function displayCard() {
     }
     return cardcopy;
 }
-function startStudying() {
+function loadDeck() {
+    const saved = sessionStorage.getItem("deck");
+    cards = saved ? JSON.parse(saved) : [];
+
+}
+function startStudying(){
+    const study = document.getElementById("startbut");
+    study.addEventListener("click",function(){
+        
+    })
+    
 }
 form.addEventListener("submit", function (event) {
     event.preventDefault();/*preventdefault helps not to refresh the page*/
