@@ -12,12 +12,12 @@ function addCard(question, answer) {
 }
 
 function deleteCard(cardId) {
-        cards = cards.filter(function (card) {
-            return card.id !== cardId;
-        });
-        saveDeck();
-        manageCards();
-    }
+    cards = cards.filter(function (card) {
+        return card.id !== cardId;
+    });
+    saveDeck();
+    manageCards();
+}
 function manageCards() {
     const cardList = document.getElementById("cardlist");
     cardList.innerHTML = "";
@@ -33,19 +33,30 @@ function manageCards() {
         cardList.appendChild(listItem);
     });
 }
-    function saveDeck() {
-        sessionStorage.setItem("deck", JSON.stringify(cards));
+function saveDeck() {
+    sessionStorage.setItem("deck", JSON.stringify(cards));
 
+}
+function loadDeck() {
+    const saved = sessionStorage.getItem("deck");
+    cards = saved ? JSON.parse(saved) : [];
+
+}
+const startButton = document.getElementById("startbutn");
+const studyPanel = document.getElementById("studysession");
+const EndButton = document.getElementById("end-btn");
+const studyProgress = document.getElementById("progress");
+function displayCard() {
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < cardcopy.length; j++) {
+            cards.push(new cardcopy(j+1, array[i].question, array[j].answer));
+        }
     }
-    function loadDeck() {
-        const saved = sessionStorage.getItem("deck");
-        cards = saved ? JSON.parse(saved) : [];
-    
-    }
-    function startStudying(){
-        
-    }
-    form.addEventListener("submit", function (event) {
+    return cardcopy;
+}
+function startStudying() {
+}
+form.addEventListener("submit", function (event) {
     event.preventDefault();/*preventdefault helps not to refresh the page*/
     const question = questionInput.value.trim();
     const answer = answerInput.value.trim();
@@ -54,20 +65,20 @@ function manageCards() {
     toggleform.textContent = "Add card";
     form.reset();/* for event submit creating a function */
 });
-    const toggleform = document.getElementById("toggleform");
-toggleform.addEventListener("click",function(){
+const toggleform = document.getElementById("toggleform");
+toggleform.addEventListener("click", function () {
     form.hidden = !form.hidden;
-    toggleform.textContent = form.hidden ? "Add card": "Hide form";
-    if(!form.hidden)questionInput.focus();
+    toggleform.textContent = form.hidden ? "Add card" : "Hide form";
+    if (!form.hidden) questionInput.focus();
 });
 
-    loadDeck();
-    manageCards();
+loadDeck();
+manageCards();
 
 
 
 
-    
+
 
 
 
