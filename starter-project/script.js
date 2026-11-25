@@ -43,6 +43,10 @@ function manageCards() {
     
     }
     function startStudying(){
+        const study = document.getElementById("startbut");
+        study.addEventListener("click",function(){
+            
+        })
         
     }
     form.addEventListener("submit", function (event) {
