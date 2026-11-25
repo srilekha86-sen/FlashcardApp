@@ -1,137 +1,73 @@
-console.log("Flashcard app loaded");
-
-// ── YOUR DATA ────────────────────────────────────────────────────
-//
-// A deck is an array of card objects. A card might look like:
-//
-//   { id: 1, question: "What is a variable?", answer: "A named container for a value." }
-//
-// Your team decides the exact shape — agree on it before anyone
-// writes code that creates or reads cards.
-
 let cards = [];
-
-
-// ── ADDING A CARD ────────────────────────────────────────────────
-//
-// When the user submits the "add card" form, you need to:
-//   1. Read the question and answer values from the form inputs
-//   2. Create a new card object and push it into the cards array
-//   3. Save the updated deck (research: how to persist data in the browser)
-//   4. Update the card list on screen so it reflects the change
-
+const form = document.getElementById("cardform");
+const questionInput = document.getElementById("question");
+const answerInput = document.getElementById("answer");/* to add a card we creating a function named addCard 
+with two parameters and declaring in name of card using object method key and value pushing */
 function addCard(question, answer) {
-  // TODO
+    if (question === "" || answer === "") return;
+    cards.push({ id: Date.now(), question: question, answer: answer });/*gives a unique number, so you can use it as the card's id.*/
+    saveDeck();
+    manageCards();
+
 }
 
-
-// ── SHOWING CARDS ON SCREEN ──────────────────────────────────────
-//
-// After any change to the cards array (add, delete), re-render the
-// list so what's on screen matches what's in memory.
-// Tip: clear the list element first, then loop through cards and
-// add a new <li> for each one.
-
-function renderCardList() {
-  // TODO
+function deleteCard(cardId) {
+        cards = cards.filter(function (card) {
+            return card.id !== cardId;
+        });
+        saveDeck();
+        manageCards();
+    }
+function manageCards() {
+    const cardList = document.getElementById("cardlist");
+    cardList.innerHTML = "";
+    cards.forEach(function (card) {
+        const listItem = document.createElement("li");
+        listItem.textContent = card.question;
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", function () {
+            deleteCard(card.id);
+        });
+        listItem.appendChild(deleteButton);
+        cardList.appendChild(listItem);
+    });
 }
+    function saveDeck() {
+        sessionStorage.setItem("deck", JSON.stringify(cards));
 
-
-// ── DELETING A CARD ──────────────────────────────────────────────
-
-function deleteCard(id) {
-  // TODO: remove the card with this id from the cards array,
-  //       save, and re-render
-}
-
-
-// ── STARTING A STUDY SESSION ─────────────────────────────────────
-//
-// Before studying you'll want to:
-//   1. Shuffle a copy of the deck (research a fair shuffle algorithm)
-//   2. Switch the visible view from "manage" to "study"
-//   3. Show the first card
-
-function startStudy() {
-  // TODO
-}
-
-
-// ── SHOWING A CARD ───────────────────────────────────────────────
-
-function showCard(card) {
-  // TODO: put the question text into the card element on screen,
-  //       and make sure the card starts un-flipped (showing question)
-}
-
-
-// ── FLIPPING A CARD ──────────────────────────────────────────────
-//
-// The flip animation is handled entirely by CSS — see styles.css.
-// All JavaScript needs to do here is toggle a CSS class.
-//
-//   cardElement.classList.toggle("flipped")
-//
-// Write the CSS first, then call this when the user clicks the card.
-
-function flipCard() {
-  // TODO
-}
-
-
-// ── MOVING TO THE NEXT CARD ──────────────────────────────────────
-
-function nextCard() {
-  // TODO: advance to the next card in the shuffled session,
-  //       or end the session if there are no more cards
-}
-
-
-// ── SAVING AND LOADING ───────────────────────────────────────────
-//
-// Cards should survive a page refresh.
-// Research the browser APIs available for storing data locally.
-// You'll need to convert your cards array to a string to store it,
-// and parse it back into an array when loading.
-
-function saveDeck() {
-  // TODO
-}
-
-function loadDeck() {
-  // TODO: load saved cards on startup, or start with an empty array
-}
-
-
-// ── EXPORT ───────────────────────────────────────────────────────
-//
-// Research: "trigger file download from JavaScript"
-// Hint: look up Blob and URL.createObjectURL
-
-function exportDeck() {
-  // TODO
-}
-
-
-// ── EVENT LISTENERS ──────────────────────────────────────────────
-//
-// Wire up your functions to the DOM here.
-// DOMContentLoaded fires once the HTML is fully parsed — a safe
-// place to do any setup that reads or writes to the page.
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  loadDeck();
-
-  // Once you have a form in your HTML, attach a submit listener:
-  //
-  // document.getElementById("add-form").addEventListener("submit", function (e) {
-  //   e.preventDefault(); // stops the page from refreshing
-  //   const question = document.getElementById("question-input").value.trim();
-  //   const answer   = document.getElementById("answer-input").value.trim();
-  //   addCard(question, answer);
-  // });
-
-  // Attach other listeners here as you build more features...
-
+    }
+    function loadDeck() {
+        const saved = sessionStorage.getItem("deck");
+        cards = saved ? JSON.parse(saved) : [];
+    
+    }
+    function startStudying(){
+        
+    }
+    form.addEventListener("submit", function (event) {
+    event.preventDefault();/*preventdefault helps not to refresh the page*/
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+    addCard(question, answer);
+    form.hidden = true;
+    toggleform.textContent = "Add card";
+    form.reset();/* for event submit creating a function */
 });
+    const toggleform = document.getElementById("toggleform");
+toggleform.addEventListener("click",function(){
+    form.hidden = !form.hidden;
+    toggleform.textContent = form.hidden ? "Add card": "Hide form";
+    if(!form.hidden)questionInput.focus();
+});
+
+    loadDeck();
+    manageCards();
+
+
+
+
+    
+
+
+
